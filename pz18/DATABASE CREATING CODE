@@ -1,0 +1,54 @@
+CREATE TABLE Clients (
+    clientID INT IDENTITY(1,1) PRIMARY KEY,
+    fullName NVARCHAR(100) NOT NULL,
+    phone NVARCHAR(15) NOT NULL,
+    email NVARCHAR(100),
+    clientType NVARCHAR(50) DEFAULT 'Regular'
+);
+
+CREATE TABLE RepairRequests (
+    requestID INT IDENTITY(1,1) PRIMARY KEY,
+    startDate DATE NOT NULL,
+    homeTechType NVARCHAR(50) NOT NULL,
+    homeTechModel NVARCHAR(100),
+    problemDescription NVARCHAR(MAX),
+    requestStatus NVARCHAR(50) DEFAULT 'New',
+    completionDate DATE,
+    repairParts NVARCHAR(MAX),
+    clientID INT NOT NULL,
+    FOREIGN KEY (clientID) REFERENCES Clients(clientID)
+);
+
+CREATE TABLE AddedDesk (
+    AddedDeskID INT IDENTITY(1,1) PRIMARY KEY,
+    message NVARCHAR(MAX) NOT NULL,
+    creationDate DATETIME DEFAULT GETDATE(),
+    clientID INT NOT NULL,
+    requestID INT NOT NULL,
+    FOREIGN KEY (clientID) REFERENCES Clients(clientID),
+    FOREIGN KEY (requestID) REFERENCES RepairRequests(requestID)
+);
+
+INSERT INTO Clients (fullName, phone, email, clientType)
+VALUES
+('Иван Иванов', '89012345678', 'ivanov@example.com', 'Regular'),
+('Петр Петров', '89098765432', 'petrov@example.com', 'Premium'),
+('Мария Смирнова', '89012340987', 'smirnova@example.com', 'Regular'),
+('Анна Кузнецова', '89123456789', 'kuznetsova@example.com', 'Premium'),
+('Сергей Соколов', '89991234567', 'sokolov@example.com', 'Regular');
+
+INSERT INTO RepairRequests (startDate, homeTechType, homeTechModel, problemDescription, requestStatus, completionDate, repairParts, clientID)
+VALUES
+(GETDATE(), 'Стиральная машина', 'LG F10B8ND', 'Не включается', 'Новая заявка', NULL, 'Ремень привода', 1),
+(GETDATE(), 'Холодильник', 'Samsung RT38K5551S9', 'Не холодит', 'В процессе ремонта', NULL, 'Компрессор', 2),
+(GETDATE(), 'Микроволновая печь', 'Panasonic NN-SD372S', 'Искрит внутри', 'Готова к выдаче', GETDATE(), 'Магнетрон', 3),
+(GETDATE(), 'Телевизор', 'Sony Bravia KDL-43WF804', 'Не включается', 'Новая заявка', NULL, 'Плата питания', 4),
+(GETDATE(), 'Пылесос', 'Dyson V11', 'Потеря мощности', 'В процессе ремонта', NULL, 'Фильтр', 5);
+
+INSERT INTO AddedDesk (message, creationDate, clientID, requestID)
+VALUES
+('К 19:00!', GETDATE(), 1, 3),
+('без опозданий', GETDATE(), 2, 2),
+('можно в любое время', GETDATE(), 3, 5),
+('меня не будет дома, дверь открыта', GETDATE(), 4, 4),
+('диагностика', GETDATE(), 5, 1);

@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище bituchet2Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AddedDesk">
+          <Key>
+            <PropertyRef Name="AddedDeskID" />
+          </Key>
+          <Property Name="AddedDeskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="creationDate" Type="datetime" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="requestID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="clientType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RepairRequests">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="homeTechType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="homeTechModel" Type="nvarchar" MaxLength="100" />
+          <Property Name="problemDescription" Type="nvarchar(max)" />
+          <Property Name="requestStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="completionDate" Type="date" />
+          <Property Name="repairParts" Type="nvarchar(max)" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__AddedDesk__clien__3E52440B">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="AddedDesk" Type="Self.AddedDesk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="AddedDesk">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AddedDesk__reque__3F466844">
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="1" />
+          <End Role="AddedDesk" Type="Self.AddedDesk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequests">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="AddedDesk">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__clien__3A81B327">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище bituchet2ModelContainer">
+          <EntitySet Name="AddedDesk" EntityType="Self.AddedDesk" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairRequests" EntityType="Self.RepairRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AddedDesk__clien__3E52440B" Association="Self.FK__AddedDesk__clien__3E52440B">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="AddedDesk" EntitySet="AddedDesk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AddedDesk__reque__3F466844" Association="Self.FK__AddedDesk__reque__3F466844">
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+            <End Role="AddedDesk" EntitySet="AddedDesk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__clien__3A81B327" Association="Self.FK__RepairReq__clien__3A81B327">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bituchet2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AddedDesk">
+          <Key>
+            <PropertyRef Name="AddedDeskID" />
+          </Key>
+          <Property Name="AddedDeskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="creationDate" Type="DateTime" Precision="3" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="requestID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__AddedDesk__clien__3E52440B" FromRole="AddedDesk" ToRole="Clients" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__AddedDesk__reque__3F466844" FromRole="AddedDesk" ToRole="RepairRequests" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="clientType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AddedDesk" Relationship="Self.FK__AddedDesk__clien__3E52440B" FromRole="Clients" ToRole="AddedDesk" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__RepairReq__clien__3A81B327" FromRole="Clients" ToRole="RepairRequests" />
+        </EntityType>
+        <EntityType Name="RepairRequests">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="homeTechType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="homeTechModel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="problemDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="requestStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="completionDate" Type="DateTime" Precision="0" />
+          <Property Name="repairParts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AddedDesk" Relationship="Self.FK__AddedDesk__reque__3F466844" FromRole="RepairRequests" ToRole="AddedDesk" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__RepairReq__clien__3A81B327" FromRole="RepairRequests" ToRole="Clients" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__AddedDesk__clien__3E52440B">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="AddedDesk" Type="Self.AddedDesk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="AddedDesk">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AddedDesk__reque__3F466844">
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="1" />
+          <End Role="AddedDesk" Type="Self.AddedDesk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequests">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="AddedDesk">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__clien__3A81B327">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bituchet2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AddedDesk" EntityType="Self.AddedDesk" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="RepairRequests" EntityType="Self.RepairRequests" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK__AddedDesk__clien__3E52440B" Association="Self.FK__AddedDesk__clien__3E52440B">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="AddedDesk" EntitySet="AddedDesk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AddedDesk__reque__3F466844" Association="Self.FK__AddedDesk__reque__3F466844">
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+            <End Role="AddedDesk" EntitySet="AddedDesk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__clien__3A81B327" Association="Self.FK__RepairReq__clien__3A81B327">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище bituchet2ModelContainer" CdmEntityContainer="bituchet2Entities">
+          <EntitySetMapping Name="AddedDesk">
+            <EntityTypeMapping TypeName="bituchet2Model.AddedDesk">
+              <MappingFragment StoreEntitySet="AddedDesk">
+                <ScalarProperty Name="AddedDeskID" ColumnName="AddedDeskID" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="bituchet2Model.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="clientType" ColumnName="clientType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairRequests">
+            <EntityTypeMapping TypeName="bituchet2Model.RepairRequests">
+              <MappingFragment StoreEntitySet="RepairRequests">
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="homeTechType" ColumnName="homeTechType" />
+                <ScalarProperty Name="homeTechModel" ColumnName="homeTechModel" />
+                <ScalarProperty Name="problemDescription" ColumnName="problemDescription" />
+                <ScalarProperty Name="requestStatus" ColumnName="requestStatus" />
+                <ScalarProperty Name="completionDate" ColumnName="completionDate" />
+                <ScalarProperty Name="repairParts" ColumnName="repairParts" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="bituchet2Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
